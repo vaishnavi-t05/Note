@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Home from "./Home";
+import axios from "axios";
 import "../App.css";
-import "./Register"
 
 function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -19,13 +18,48 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    const { username, password } = formData;
 
-    // Navigate to Home page (temporary)
-    navigate("/Home");
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login/",
+        {
+          username: username,
+          password: password,
+        }
+      );
+
+      console.log(response.data.access);
+
+      alert("Login Successful");
+
+      // Optional: save token if backend sends one
+      if (response.data.access) {
+        localStorage.setItem("token", response.data.access);
+      }
+
+      // Optional: save username
+      if (response.data.username) {
+        localStorage.setItem("username", response.data.username);
+      }
+
+      navigate("/Home");
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        alert(
+          error.response.data.message ||
+          "Invalid email or password"
+        );
+      } else {
+        alert("Cannot connect to backend");
+      }
+    }
   };
 
   return (
@@ -35,10 +69,10 @@ function Login() {
 
         <form onSubmit={handleSubmit}>
           <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={formData.email}
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
             onChange={handleChange}
             required
           />
@@ -52,11 +86,14 @@ function Login() {
             required
           />
 
-          <button type="submit">Login</button>
+          <button type="submit">
+            Login
+          </button>
         </form>
 
         <p>
-          Don't have an account? <Link to="/register">Register</Link>
+          Don't have an account?{" "}
+          <Link to="/register">Register</Link>
         </p>
       </div>
     </div>

@@ -1,58 +1,121 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./Home.css";
 
 function Home() {
   const username = localStorage.getItem("username") || "User";
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setcontent] = useState("");
 
   const [notes, setNotes] = useState([]);
 
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
 
-  // Add / Update Note
-  const handleSubmit = (e) => {
+  // =========================
+  // GET ALL NOTES
+  // =========================
+  const fetchNotes = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:8000/api/notes/",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    setNotes(response.data);
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+  }
+};
+
+  // Load notes when page opens
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+
+  // =========================
+  // ADD / UPDATE NOTE
+  // =========================
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) {
-      alert("Please enter title and description");
+    if (!title.trim() || !content.trim()) {
+      alert("Please enter title and content");
       return;
     }
 
-    if (editId !== null) {
-      setNotes(
-        notes.map((note) =>
-          note.id === editId
-            ? {
-                ...note,
-                title: title,
-                description: description,
-              }
-            : note
-        )
-      );
+    try {
+      // UPDATE NOTE
+      if (editId !== null) {
+        await axios.put(
+          `http://localhost:8000/api/notes/update/${editId}/`,
+          {
+            title: title,
+            content: content,
+          },
+          {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }
+        );
 
-      setEditId(null);
-    } else {
-      const newNote = {
-        id: Date.now(),
-        title: title,
-        description: description,
-      };
+        alert("Note updated successfully");
 
-      setNotes([...notes, newNote]);
+        setEditId(null);
+      } 
+      
+      // ADD NOTE
+      else {
+        await axios.post(
+          "http://localhost:8000/api/notes/",
+          {
+            title: title,
+            content: content,
+          },
+          {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }
+
+        );
+
+        alert("Note added successfully");
+      }
+
+      // Clear inputs
+      setTitle("");
+      setcontent("");
+
+      // Refresh notes from backend
+      fetchNotes();
+
+    } catch (error) {
+      console.error("Error saving note:", error);
+
+      if (error.response) {
+        console.log(error.response.data);
+        alert("Failed to save note");
+      } else {
+        alert("Cannot connect to backend");
+      }
     }
-
-    setTitle("");
-    setDescription("");
   };
 
-  // Edit Note
+
+  // =========================
+  // EDIT NOTE
+  // =========================
   const handleEdit = (note) => {
     setTitle(note.title);
-    setDescription(note.description);
+    setcontent(note.content);
     setEditId(note.id);
 
     window.scrollTo({
@@ -61,23 +124,48 @@ function Home() {
     });
   };
 
-  // Delete Note
-  const handleDelete = (id) => {
+
+  // =========================
+  // DELETE NOTE
+  // =========================
+  const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this note?"
     );
 
-    if (confirmDelete) {
-      setNotes(notes.filter((note) => note.id !== id));
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/notes/delete/${id}/`,
+        {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }
+      );
+
+      alert("Note deleted successfully");
+
+      // Refresh notes
+      fetchNotes();
+
+    } catch (error) {
+      console.error("Error deleting note:", error);
+      alert("Failed to delete note");
     }
   };
 
-  // Search Notes
+
+  // =========================
+  // SEARCH NOTES
+  // =========================
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(search.toLowerCase()) ||
-      note.description.toLowerCase().includes(search.toLowerCase())
+      note.content.toLowerCase().includes(search.toLowerCase())
   );
+
 
   return (
     <div className="home-page">
@@ -95,7 +183,7 @@ function Home() {
           <button
             className="logout-btn"
             onClick={() => {
-              localStorage.removeItem("username");
+              localStorage.removeItem("token");
               window.location.href = "/login";
             }}
           >
@@ -105,19 +193,23 @@ function Home() {
 
       </nav>
 
+
       {/* Main Content */}
       <main className="main-content">
 
         {/* Welcome Section */}
         <section className="welcome-section">
+
           <div>
-            <p className="small-text">YOUR PERSONAL NOTES</p>
+            <p className="small-text">
+              YOUR PERSONAL NOTES
+            </p>
 
             <h1>
               Welcome back, <span>{username}</span> 👋
             </h1>
 
-            <p className="welcome-description">
+            <p className="welcome-content">
               Capture your ideas, organize your thoughts and keep
               everything in one place.
             </p>
@@ -128,17 +220,24 @@ function Home() {
             <strong>{notes.length}</strong>
             <small>Total Notes</small>
           </div>
+
         </section>
+
 
         {/* Add Note Section */}
         <section className="add-note-card">
 
           <div className="section-title">
-            <div className="title-icon">✏️</div>
+
+            <div className="title-icon">
+              ✏️
+            </div>
 
             <div>
               <h2>
-                {editId !== null ? "Edit Your Note" : "Create a New Note"}
+                {editId !== null
+                  ? "Edit Your Note"
+                  : "Create a New Note"}
               </h2>
 
               <p>
@@ -147,11 +246,14 @@ function Home() {
                   : "Write down something important"}
               </p>
             </div>
+
           </div>
+
 
           <form onSubmit={handleSubmit}>
 
             <div className="input-group">
+
               <label>Title</label>
 
               <input
@@ -161,84 +263,114 @@ function Home() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
+
             </div>
 
+
             <div className="input-group">
-              <label>Description</label>
+
+              <label>content</label>
 
               <textarea
                 placeholder="Write your note here..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={content}
+                onChange={(e) => setcontent(e.target.value)}
                 required
-              ></textarea>
+              />
+
             </div>
+
 
             <div className="form-buttons">
 
-              <button type="submit" className="add-btn">
-                {editId !== null ? "✓ Update Note" : "+ Add Note"}
+              <button
+                type="submit"
+                className="add-btn"
+              >
+                {editId !== null
+                  ? "✓ Update Note"
+                  : "+ Add Note"}
               </button>
 
+
               {editId !== null && (
+
                 <button
                   type="button"
                   className="cancel-btn"
                   onClick={() => {
                     setEditId(null);
                     setTitle("");
-                    setDescription("");
+                    setcontent("");
                   }}
                 >
                   Cancel
                 </button>
+
               )}
 
             </div>
 
           </form>
+
         </section>
 
-        {/* Notes Header */}
+
+        {/* Notes Section */}
         <section className="notes-section">
 
           <div className="notes-header">
 
             <div>
+
               <h2>My Notes</h2>
 
               <p>
                 {notes.length === 0
                   ? "You don't have any notes yet"
                   : `${notes.length} ${
-                      notes.length === 1 ? "note" : "notes"
+                      notes.length === 1
+                        ? "note"
+                        : "notes"
                     } saved`}
               </p>
+
             </div>
 
+
             {notes.length > 0 && (
+
               <div className="search-box">
+
                 🔍
 
                 <input
                   type="text"
                   placeholder="Search notes..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
                 />
+
               </div>
+
             )}
 
           </div>
 
-          {/* Notes */}
+
+          {/* Notes Grid */}
           {filteredNotes.length > 0 ? (
 
             <div className="notes-grid">
 
               {filteredNotes.map((note) => (
 
-                <div className="note-card" key={note.id}>
+                <div
+                  className="note-card"
+                  key={note.id}
+                >
 
                   <div className="note-top">
 
@@ -246,19 +378,25 @@ function Home() {
                       📝
                     </div>
 
+
                     <div className="note-actions">
 
                       <button
                         className="edit-btn"
-                        onClick={() => handleEdit(note)}
+                        onClick={() =>
+                          handleEdit(note)
+                        }
                         title="Edit note"
                       >
                         ✏️
                       </button>
 
+
                       <button
                         className="delete-btn"
-                        onClick={() => handleDelete(note.id)}
+                        onClick={() =>
+                          handleDelete(note.id)
+                        }
                         title="Delete note"
                       >
                         🗑️
@@ -268,12 +406,16 @@ function Home() {
 
                   </div>
 
+
                   <h3>{note.title}</h3>
 
-                  <p>{note.description}</p>
+                  <p>{note.content}</p>
+
 
                   <div className="note-footer">
-                    <span>📌 Personal Note</span>
+                    <span>
+                      📌 Personal Note
+                    </span>
                   </div>
 
                 </div>
@@ -291,7 +433,9 @@ function Home() {
               </div>
 
               <h3>
-                {search ? "No notes found" : "No Notes Yet"}
+                {search
+                  ? "No notes found"
+                  : "No Notes Yet"}
               </h3>
 
               <p>

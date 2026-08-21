@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Register.css";
 
 function Register() {
@@ -19,47 +20,51 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { username, email, password, confirmPassword } = user;
 
+    // Check empty fields
     if (!username || !email || !password || !confirmPassword) {
       alert("Please fill all fields");
       return;
     }
 
+    // Check passwords
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
-    
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/register/`,
+        {
+          username: username,
+          email: email,
+          password: password,
+        }
+      );
 
-    
-    const existingUser = users.find((item) => item.email === email);
+      console.log(response.data);
 
-    if (existingUser) {
-      alert("Email already registered");
-      return;
+      alert("Registration Successful");
+
+      navigate("/login");
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        alert(
+          error.response.data.message ||
+          "Registration failed"
+        );
+      } else {
+        alert("Cannot connect to backend");
+      }
     }
-
-    // Save new user
-    users.push({
-      username,
-      email,
-      password,
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-
-    localStorage.setItem("username", username);
-
-
-    alert("Registration Successful");
-
-    navigate("/login");
   };
 
   return (
