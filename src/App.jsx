@@ -3,24 +3,43 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 
-function App() {
+function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+function PublicRoute({ children }) {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
+}
+
+function App() {
   return (
     <Routes>
-      {/* Default Route */}
+
+      {/* Default */}
       <Route
         path="/"
-        element={
-          token ? <Navigate to="/home" /> : <Navigate to="/login" />
-        }
+        element={<Navigate to="/login" replace />}
       />
 
       {/* Register */}
       <Route
         path="/register"
         element={
-          token ? <Navigate to="/home" /> : <Register />
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
         }
       />
 
@@ -28,17 +47,28 @@ function App() {
       <Route
         path="/login"
         element={
-          token ? <Navigate to="/home" /> : <Login />
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
         }
       />
 
-      {/* Protected Home Route */}
+      {/* Protected Home */}
       <Route
         path="/home"
         element={
-          token ? <Home /> : <Navigate to="/login" />
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
         }
       />
+
+      {/* Unknown URL */}
+      <Route
+        path="*"
+        element={<Navigate to="/" replace />}
+      />
+
     </Routes>
   );
 }

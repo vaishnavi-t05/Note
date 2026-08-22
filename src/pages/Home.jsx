@@ -22,7 +22,7 @@ function Home() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
 
       setNotes(response.data);
@@ -62,7 +62,7 @@ function Home() {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
 
         alert("Note updated successfully");
@@ -82,7 +82,7 @@ function Home() {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
 
         alert("Note added successfully");
@@ -94,7 +94,6 @@ function Home() {
 
       // Refresh notes
       fetchNotes();
-
     } catch (error) {
       console.error("Error saving note:", error);
 
@@ -126,7 +125,7 @@ function Home() {
   // =========================
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this note?"
+      "Are you sure you want to delete this note?",
     );
 
     if (!confirmDelete) return;
@@ -138,14 +137,13 @@ function Home() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
 
       alert("Note deleted successfully");
 
       // Refresh notes
       fetchNotes();
-
     } catch (error) {
       console.error("Error deleting note:", error);
       alert("Failed to delete note");
@@ -158,15 +156,13 @@ function Home() {
   const filteredNotes = notes.filter(
     (note) =>
       note.title.toLowerCase().includes(search.toLowerCase()) ||
-      note.content.toLowerCase().includes(search.toLowerCase())
+      note.content.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div className="home-page">
-
       {/* Navbar */}
       <nav className="navbar">
-
         <div className="logo">
           📝 <span>MyNotes</span>
         </div>
@@ -178,34 +174,31 @@ function Home() {
             className="logout-btn"
             onClick={() => {
               localStorage.removeItem("token");
+              localStorage.removeItem("refreshToken");
               localStorage.removeItem("username");
-              window.location.href = "/login";
+
+              navigate("/login", { replace: true });
             }}
           >
             Logout
           </button>
         </div>
-
       </nav>
 
       {/* Main Content */}
       <main className="main-content">
-
         {/* Welcome Section */}
         <section className="welcome-section">
-
           <div>
-            <p className="small-text">
-              YOUR PERSONAL NOTES
-            </p>
+            <p className="small-text">YOUR PERSONAL NOTES</p>
 
             <h1>
               Welcome back, <span>{username}</span> 👋
             </h1>
 
             <p className="welcome-content">
-              Capture your ideas, organize your thoughts and keep
-              everything in one place.
+              Capture your ideas, organize your thoughts and keep everything in
+              one place.
             </p>
           </div>
 
@@ -214,23 +207,16 @@ function Home() {
             <strong>{notes.length}</strong>
             <small>Total Notes</small>
           </div>
-
         </section>
 
         {/* Add Note Section */}
         <section className="add-note-card">
-
           <div className="section-title">
-
-            <div className="title-icon">
-              ✏️
-            </div>
+            <div className="title-icon">✏️</div>
 
             <div>
               <h2>
-                {editId !== null
-                  ? "Edit Your Note"
-                  : "Create a New Note"}
+                {editId !== null ? "Edit Your Note" : "Create a New Note"}
               </h2>
 
               <p>
@@ -239,13 +225,10 @@ function Home() {
                   : "Write down something important"}
               </p>
             </div>
-
           </div>
 
           <form onSubmit={handleSubmit}>
-
             <div className="input-group">
-
               <label>Title</label>
 
               <input
@@ -255,11 +238,9 @@ function Home() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-
             </div>
 
             <div className="input-group">
-
               <label>Content</label>
 
               <textarea
@@ -268,22 +249,14 @@ function Home() {
                 onChange={(e) => setContent(e.target.value)}
                 required
               />
-
             </div>
 
             <div className="form-buttons">
-
-              <button
-                type="submit"
-                className="add-btn"
-              >
-                {editId !== null
-                  ? "✓ Update Note"
-                  : "+ Add Note"}
+              <button type="submit" className="add-btn">
+                {editId !== null ? "✓ Update Note" : "+ Add Note"}
               </button>
 
               {editId !== null && (
-
                 <button
                   type="button"
                   className="cancel-btn"
@@ -295,77 +268,48 @@ function Home() {
                 >
                   Cancel
                 </button>
-
               )}
-
             </div>
-
           </form>
-
         </section>
 
         {/* Notes Section */}
         <section className="notes-section">
-
           <div className="notes-header">
-
             <div>
-
               <h2>My Notes</h2>
 
               <p>
                 {notes.length === 0
                   ? "You don't have any notes yet"
                   : `${notes.length} ${
-                      notes.length === 1
-                        ? "note"
-                        : "notes"
+                      notes.length === 1 ? "note" : "notes"
                     } saved`}
               </p>
-
             </div>
 
             {notes.length > 0 && (
-
               <div className="search-box">
-
                 🔍
-
                 <input
                   type="text"
                   placeholder="Search notes..."
                   value={search}
-                  onChange={(e) =>
-                    setSearch(e.target.value)
-                  }
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-
               </div>
-
             )}
-
           </div>
 
           {/* Notes Grid */}
           {filteredNotes.length > 0 ? (
-
             <div className="notes-grid">
-
               {filteredNotes.map((note) => (
-
-                <div
-                  className="note-card"
-                  key={note.id}
-                >
-
+                <div className="note-card" key={note.id}>
                   <div className="note-top">
-
-                    <div className="note-icon">
-                      📝
-                    </div>
+                    <div className="note-icon">📝</div>
 
                     <div className="note-actions">
-
                       <button
                         className="edit-btn"
                         onClick={() => handleEdit(note)}
@@ -381,9 +325,7 @@ function Home() {
                       >
                         🗑️
                       </button>
-
                     </div>
-
                   </div>
 
                   <h3>{note.title}</h3>
@@ -391,45 +333,26 @@ function Home() {
                   <p>{note.content}</p>
 
                   <div className="note-footer">
-                    <span>
-                      📌 Personal Note
-                    </span>
+                    <span>📌 Personal Note</span>
                   </div>
-
                 </div>
-
               ))}
-
             </div>
-
           ) : (
-
             <div className="empty-state">
+              <div className="empty-icon">📝</div>
 
-              <div className="empty-icon">
-                📝
-              </div>
-
-              <h3>
-                {search
-                  ? "No notes found"
-                  : "No Notes Yet"}
-              </h3>
+              <h3>{search ? "No notes found" : "No Notes Yet"}</h3>
 
               <p>
                 {search
                   ? "Try searching with a different keyword."
                   : "Start writing your first note above!"}
               </p>
-
             </div>
-
           )}
-
         </section>
-
       </main>
-
     </div>
   );
 }
