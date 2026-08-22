@@ -6,10 +6,8 @@ function Home() {
   const username = localStorage.getItem("username") || "User";
 
   const [title, setTitle] = useState("");
-  const [content, setcontent] = useState("");
-
+  const [content, setContent] = useState("");
   const [notes, setNotes] = useState([]);
-
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
 
@@ -17,27 +15,26 @@ function Home() {
   // GET ALL NOTES
   // =========================
   const fetchNotes = async () => {
-  try {
-    const response = await axios.get(
-      "http://localhost:8000/api/notes/",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/notes/`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    setNotes(response.data);
-  } catch (error) {
-    console.error("Error fetching notes:", error);
-  }
-};
+      setNotes(response.data);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    }
+  };
 
   // Load notes when page opens
   useEffect(() => {
     fetchNotes();
   }, []);
-
 
   // =========================
   // ADD / UPDATE NOTE
@@ -51,40 +48,41 @@ function Home() {
     }
 
     try {
+      // =========================
       // UPDATE NOTE
+      // =========================
       if (editId !== null) {
         await axios.put(
-          `http://localhost:8000/api/notes/update/${editId}/`,
+          `${import.meta.env.VITE_API_URL}/notes/update/${editId}/`,
           {
             title: title,
             content: content,
           },
           {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
         alert("Note updated successfully");
 
         setEditId(null);
-      } 
-      
-      // ADD NOTE
-      else {
+      } else {
+        // =========================
+        // ADD NOTE
+        // =========================
         await axios.post(
-          "http://localhost:8000/api/notes/",
+          `${import.meta.env.VITE_API_URL}/notes/`,
           {
             title: title,
             content: content,
           },
           {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }
-
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
         alert("Note added successfully");
@@ -92,9 +90,9 @@ function Home() {
 
       // Clear inputs
       setTitle("");
-      setcontent("");
+      setContent("");
 
-      // Refresh notes from backend
+      // Refresh notes
       fetchNotes();
 
     } catch (error) {
@@ -109,13 +107,12 @@ function Home() {
     }
   };
 
-
   // =========================
   // EDIT NOTE
   // =========================
   const handleEdit = (note) => {
     setTitle(note.title);
-    setcontent(note.content);
+    setContent(note.content);
     setEditId(note.id);
 
     window.scrollTo({
@@ -123,7 +120,6 @@ function Home() {
       behavior: "smooth",
     });
   };
-
 
   // =========================
   // DELETE NOTE
@@ -137,12 +133,12 @@ function Home() {
 
     try {
       await axios.delete(
-        `http://localhost:8000/api/notes/delete/${id}/`,
+        `${import.meta.env.VITE_API_URL}/notes/delete/${id}/`,
         {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       alert("Note deleted successfully");
@@ -156,7 +152,6 @@ function Home() {
     }
   };
 
-
   // =========================
   // SEARCH NOTES
   // =========================
@@ -165,7 +160,6 @@ function Home() {
       note.title.toLowerCase().includes(search.toLowerCase()) ||
       note.content.toLowerCase().includes(search.toLowerCase())
   );
-
 
   return (
     <div className="home-page">
@@ -184,6 +178,7 @@ function Home() {
             className="logout-btn"
             onClick={() => {
               localStorage.removeItem("token");
+              localStorage.removeItem("username");
               window.location.href = "/login";
             }}
           >
@@ -192,7 +187,6 @@ function Home() {
         </div>
 
       </nav>
-
 
       {/* Main Content */}
       <main className="main-content">
@@ -223,7 +217,6 @@ function Home() {
 
         </section>
 
-
         {/* Add Note Section */}
         <section className="add-note-card">
 
@@ -249,7 +242,6 @@ function Home() {
 
           </div>
 
-
           <form onSubmit={handleSubmit}>
 
             <div className="input-group">
@@ -266,20 +258,18 @@ function Home() {
 
             </div>
 
-
             <div className="input-group">
 
-              <label>content</label>
+              <label>Content</label>
 
               <textarea
                 placeholder="Write your note here..."
                 value={content}
-                onChange={(e) => setcontent(e.target.value)}
+                onChange={(e) => setContent(e.target.value)}
                 required
               />
 
             </div>
-
 
             <div className="form-buttons">
 
@@ -292,7 +282,6 @@ function Home() {
                   : "+ Add Note"}
               </button>
 
-
               {editId !== null && (
 
                 <button
@@ -301,7 +290,7 @@ function Home() {
                   onClick={() => {
                     setEditId(null);
                     setTitle("");
-                    setcontent("");
+                    setContent("");
                   }}
                 >
                   Cancel
@@ -314,7 +303,6 @@ function Home() {
           </form>
 
         </section>
-
 
         {/* Notes Section */}
         <section className="notes-section">
@@ -337,7 +325,6 @@ function Home() {
 
             </div>
 
-
             {notes.length > 0 && (
 
               <div className="search-box">
@@ -359,7 +346,6 @@ function Home() {
 
           </div>
 
-
           {/* Notes Grid */}
           {filteredNotes.length > 0 ? (
 
@@ -378,25 +364,19 @@ function Home() {
                       📝
                     </div>
 
-
                     <div className="note-actions">
 
                       <button
                         className="edit-btn"
-                        onClick={() =>
-                          handleEdit(note)
-                        }
+                        onClick={() => handleEdit(note)}
                         title="Edit note"
                       >
                         ✏️
                       </button>
 
-
                       <button
                         className="delete-btn"
-                        onClick={() =>
-                          handleDelete(note.id)
-                        }
+                        onClick={() => handleDelete(note.id)}
                         title="Delete note"
                       >
                         🗑️
@@ -406,11 +386,9 @@ function Home() {
 
                   </div>
 
-
                   <h3>{note.title}</h3>
 
                   <p>{note.content}</p>
-
 
                   <div className="note-footer">
                     <span>
