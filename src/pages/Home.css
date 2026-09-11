@@ -1,336 +1,732 @@
+```css
+/* =========================================
+   RESET
+========================================= */
+
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #f5f7fb;
-  color: #1f2937;
 }
+
+
+/* =========================================
+   HOME PAGE
+========================================= */
 
 .home-page {
   min-height: 100vh;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      #06b6d4 0%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      #7c3aed 0%,
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e1b4b
+    );
+
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ================= NAVBAR ================= */
+
+/* =========================================
+   NAVBAR
+========================================= */
 
 .navbar {
-  height: 70px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+  height: 75px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 7%;
+  padding: 0 6%;
+
+  background: rgba(15, 23, 42, 0.72);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.2);
 }
+
+
+/* =========================================
+   LOGO
+========================================= */
 
 .logo {
-  font-size: 23px;
-  font-weight: bold;
-  color: #4f46e5;
-
   display: flex;
   align-items: center;
-  gap: 8px;
+
+  gap: 9px;
+
+  font-size: 25px;
+
+  font-weight: 700;
+
+  color: white;
+
+  letter-spacing: 0.3px;
 }
+
+.logo span {
+  color: #67e8f9;
+}
+
+
+/* =========================================
+   USER AREA
+========================================= */
 
 .nav-user {
   display: flex;
   align-items: center;
-  gap: 18px;
 
-  font-size: 15px;
-  font-weight: 600;
+  gap: 15px;
 }
 
+.nav-user > span {
+  padding: 9px 15px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 20px;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 13px;
+
+  backdrop-filter: blur(10px);
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+========================================= */
+
 .logout-btn {
-  background: #111827;
-  color: white;
+  padding: 10px 18px;
 
   border: none;
-  border-radius: 8px;
 
-  padding: 9px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #06b6d4,
+    #8b5cf6
+  );
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 600;
 
   cursor: pointer;
 
-  font-size: 14px;
-  font-weight: 600;
-
-  transition: 0.2s;
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: #374151;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(6, 182, 212, 0.3);
 }
 
-/* ================= MAIN ================= */
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
 
 .main-content {
-  width: 86%;
-  max-width: 1150px;
+  width: 88%;
+  max-width: 1200px;
+
   margin: auto;
-  padding: 45px 0 70px;
+
+  padding: 55px 0 90px;
 }
 
-/* ================= WELCOME ================= */
+
+/* =========================================
+   WELCOME SECTION
+========================================= */
 
 .welcome-section {
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
 
-  margin-bottom: 35px;
+  justify-content: space-between;
+
+  gap: 50px;
+
+  padding: 15px 5px 45px;
 }
+
+
+/* =========================================
+   SMALL TEXT
+========================================= */
 
 .small-text {
-  color: #6366f1;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
+  display: inline-block;
 
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+
+  color: #67e8f9;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 2.5px;
+
+  text-transform: uppercase;
 }
 
+
+/* =========================================
+   WELCOME HEADING
+========================================= */
+
 .welcome-section h1 {
-  font-size: 34px;
-  margin: 0 0 10px;
-  color: #111827;
+  margin-bottom: 15px;
+
+  color: white;
+
+  font-size: 43px;
+
+  line-height: 1.15;
+
+  letter-spacing: -1px;
 }
 
 .welcome-section h1 span {
-  color: #4f46e5;
+  background: linear-gradient(
+    135deg,
+    #a78bfa,
+    #67e8f9
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
 }
 
-.welcome-description {
-  color: #6b7280;
-  font-size: 16px;
-  margin: 0;
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.welcome-content {
+  max-width: 620px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 15px;
+
+  line-height: 1.8;
 }
+
+
+/* =========================================
+   NOTE COUNT
+========================================= */
 
 .note-count {
-  width: 130px;
-  height: 130px;
+  width: 190px;
 
-  background: white;
-
-  border-radius: 18px;
+  min-height: 165px;
 
   display: flex;
+
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  position: relative;
+
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
+  border-radius: 24px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Decorative glow */
+
+.note-count::before {
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  top: -45px;
+  right: -35px;
+
+  border-radius: 50%;
+
+  background: #06b6d4;
+
+  opacity: 0.25;
+
+  filter: blur(20px);
+}
+
+
+/* Bottom glow */
+
+.note-count::after {
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  bottom: -45px;
+  left: -35px;
+
+  border-radius: 50%;
+
+  background: #7c3aed;
+
+  opacity: 0.25;
+
+  filter: blur(20px);
+}
+
+.note-count span,
+.note-count strong,
+.note-count small {
+  position: relative;
+
+  z-index: 2;
 }
 
 .note-count span {
-  font-size: 22px;
+  margin-bottom: 7px;
+
+  font-size: 25px;
 }
 
 .note-count strong {
-  font-size: 28px;
-  color: #4f46e5;
+  color: white;
+
+  font-size: 38px;
+
+  line-height: 1;
 }
 
 .note-count small {
-  color: #6b7280;
+  margin-top: 8px;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 12px;
+
+  font-weight: 600;
 }
 
-/* ================= ADD NOTE ================= */
+
+/* =========================================
+   ADD NOTE CARD
+========================================= */
 
 .add-note-card {
-  background: white;
+  padding: 32px;
 
-  padding: 30px;
+  margin-bottom: 55px;
 
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.10);
 
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-  margin-bottom: 45px;
+  border-radius: 24px;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.25);
 }
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
 
 .section-title {
   display: flex;
+
   align-items: center;
 
   gap: 15px;
 
-  margin-bottom: 25px;
+  margin-bottom: 28px;
 }
+
+
+/* =========================================
+   TITLE ICON
+========================================= */
 
 .title-icon {
   width: 48px;
   height: 48px;
 
-  background: #eef2ff;
-
-  border-radius: 12px;
-
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  font-size: 22px;
+  background: rgba(139, 92, 246, 0.18);
+
+  border: 1px solid rgba(167, 139, 250, 0.25);
+
+  border-radius: 14px;
+
+  color: #a78bfa;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 8px 20px rgba(124, 58, 237, 0.12);
 }
 
+
+/* =========================================
+   SECTION TITLE TEXT
+========================================= */
+
 .section-title h2 {
-  margin: 0 0 5px;
-  font-size: 21px;
+  margin-bottom: 4px;
+
+  color: white;
+
+  font-size: 20px;
 }
 
 .section-title p {
-  margin: 0;
-  color: #6b7280;
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+
+  font-size: 13px;
 }
 
+
+/* =========================================
+   INPUT GROUP
+========================================= */
+
 .input-group {
-  margin-bottom: 18px;
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 21px;
 }
 
 .input-group label {
-  display: block;
-
-  font-size: 14px;
-  font-weight: 600;
-
   margin-bottom: 8px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 13px;
+
+  font-weight: 600;
 }
+
+
+/* =========================================
+   INPUT + TEXTAREA
+========================================= */
 
 .input-group input,
 .input-group textarea {
   width: 100%;
 
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-  border-radius: 10px;
-
-  padding: 13px 15px;
-
-  font-size: 15px;
+  border-radius: 12px;
 
   outline: none;
 
-  font-family: inherit;
-
-  transition: 0.2s;
-}
-
-.input-group input:focus,
-.input-group textarea:focus {
-  border-color: #6366f1;
-
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.input-group textarea {
-  min-height: 120px;
-
-  resize: vertical;
-}
-
-.form-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.add-btn {
-  background: #4f46e5;
+  background: rgba(255, 255, 255, 0.08);
 
   color: white;
 
-  border: none;
-
-  border-radius: 9px;
-
-  padding: 11px 20px;
+  font-family: Arial, Helvetica, sans-serif;
 
   font-size: 14px;
+
+  transition: all 0.3s ease;
+}
+
+.input-group input {
+  height: 50px;
+
+  padding: 0 16px;
+}
+
+.input-group textarea {
+  min-height: 145px;
+
+  padding: 15px 16px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   PLACEHOLDER
+========================================= */
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================================
+   INPUT FOCUS
+========================================= */
+
+.input-group input:focus,
+.input-group textarea:focus {
+  background: rgba(255, 255, 255, 0.13);
+
+  border-color: #67e8f9;
+
+  box-shadow:
+    0 0 0 3px rgba(103, 232, 249, 0.12);
+}
+
+
+/* =========================================
+   FORM BUTTONS
+========================================= */
+
+.form-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 5px;
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+.add-btn {
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #06b6d4
+  );
+
+  color: white;
+
+  font-size: 14px;
+
   font-weight: 600;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition: all 0.3s ease;
 }
 
 .add-btn:hover {
-  background: #4338ca;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(6, 182, 212, 0.3);
 }
+
+
+/* =========================================
+   CANCEL BUTTON
+========================================= */
 
 .cancel-btn {
-  background: #f3f4f6;
+  padding: 11px 22px;
 
-  color: #374151;
+  border: 1px solid rgba(255, 255, 255, 0.20);
 
-  border: none;
+  border-radius: 12px;
 
-  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
 
-  padding: 11px 20px;
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 14px;
+
+  font-weight: 600;
 
   cursor: pointer;
+
+  transition: all 0.3s ease;
 }
 
-/* ================= NOTES HEADER ================= */
+.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+
+  border-color: rgba(255, 255, 255, 0.30);
+}
+
+
+/* =========================================
+   NOTES HEADER
+========================================= */
 
 .notes-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  margin-bottom: 22px;
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 25px;
 }
 
 .notes-header h2 {
-  margin: 0 0 5px;
+  margin-bottom: 5px;
 
-  font-size: 25px;
+  color: white;
+
+  font-size: 28px;
+
+  letter-spacing: -0.5px;
 }
 
 .notes-header p {
-  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
 
-  color: #6b7280;
-
-  font-size: 14px;
+  font-size: 13px;
 }
 
+
+/* =========================================
+   SEARCH BOX
+========================================= */
+
 .search-box {
-  background: white;
+  width: 280px;
 
-  border: 1px solid #e5e7eb;
-
-  border-radius: 10px;
-
-  padding: 9px 13px;
+  height: 45px;
 
   display: flex;
+
   align-items: center;
 
   gap: 8px;
+
+  padding: 0 14px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  border-radius: 12px;
+
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  border-color: #67e8f9;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 0 0 3px rgba(103, 232, 249, 0.10);
+}
+
+.search-box span {
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 15px;
 }
 
 .search-box input {
+  width: 100%;
+
   border: none;
 
   outline: none;
 
-  font-size: 14px;
+  background: transparent;
 
-  width: 180px;
+  color: white;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 13px;
 }
 
-/* ================= NOTES GRID ================= */
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================================
+   NOTES GRID
+========================================= */
 
 .notes-grid {
   display: grid;
@@ -340,207 +736,457 @@ body {
   gap: 20px;
 }
 
+
+/* =========================================
+   NOTE CARD
+========================================= */
+
 .note-card {
-  background: white;
+  min-height: 245px;
+
+  display: flex;
+
+  flex-direction: column;
 
   padding: 22px;
 
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.10);
 
-  min-height: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
 
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
 
-  border: 1px solid #f0f0f0;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .note-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-7px);
 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.09);
+  border-color: rgba(167, 139, 250, 0.45);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.28);
 }
+
+
+/* =========================================
+   NOTE TOP
+========================================= */
 
 .note-top {
   display: flex;
 
-  justify-content: space-between;
-
   align-items: center;
+
+  justify-content: space-between;
 
   margin-bottom: 18px;
 }
+
+
+/* =========================================
+   NOTE ICON
+========================================= */
 
 .note-icon {
   width: 42px;
   height: 42px;
 
-  background: #eef2ff;
-
-  border-radius: 10px;
-
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
+  background: rgba(139, 92, 246, 0.18);
+
+  border: 1px solid rgba(167, 139, 250, 0.22);
+
+  border-radius: 12px;
+
+  color: #a78bfa;
+
+  font-size: 18px;
 }
+
+
+/* =========================================
+   NOTE ACTIONS
+========================================= */
 
 .note-actions {
   display: flex;
 
-  gap: 6px;
+  gap: 7px;
 }
 
-.note-actions button {
+.edit-btn,
+.delete-btn {
   width: 34px;
   height: 34px;
 
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   border: none;
 
-  border-radius: 8px;
+  border-radius: 9px;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  font-size: 14px;
+
+  transition: all 0.25s ease;
 }
 
+
+/* =========================================
+   EDIT
+========================================= */
+
 .edit-btn {
-  background: #eff6ff;
+  background: rgba(139, 92, 246, 0.18);
+
+  color: #c4b5fd;
 }
 
 .edit-btn:hover {
-  background: #dbeafe;
+  background: rgba(139, 92, 246, 0.30);
+
+  transform: scale(1.08);
 }
 
+
+/* =========================================
+   DELETE
+========================================= */
+
 .delete-btn {
-  background: #fef2f2;
+  background: rgba(239, 68, 68, 0.12);
+
+  color: #fca5a5;
 }
 
 .delete-btn:hover {
-  background: #fee2e2;
+  background: rgba(239, 68, 68, 0.22);
+
+  transform: scale(1.08);
 }
+
+
+/* =========================================
+   NOTE TITLE
+========================================= */
 
 .note-card h3 {
-  font-size: 19px;
+  margin-bottom: 10px;
 
-  margin: 0 0 10px;
+  color: white;
 
-  color: #111827;
+  font-size: 18px;
+
+  line-height: 1.4;
+
+  word-break: break-word;
 }
 
-.note-card p {
-  color: #6b7280;
 
-  line-height: 1.6;
+/* =========================================
+   NOTE CONTENT
+========================================= */
+
+.note-card > p {
+  flex: 1;
+
+  color: rgba(255, 255, 255, 0.62);
 
   font-size: 14px;
 
-  min-height: 65px;
+  line-height: 1.7;
+
+  word-break: break-word;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 4;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
 }
 
+
+/* =========================================
+   NOTE FOOTER
+========================================= */
+
 .note-footer {
-  border-top: 1px solid #f0f0f0;
+  margin-top: 20px;
 
   padding-top: 13px;
 
-  margin-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.40);
 
-  font-size: 12px;
+  font-size: 11px;
+
+  font-weight: 600;
 }
 
-/* ================= EMPTY STATE ================= */
+
+/* =========================================
+   EMPTY STATE
+========================================= */
 
 .empty-state {
-  background: white;
+  min-height: 300px;
 
-  border-radius: 16px;
+  display: flex;
 
-  padding: 60px 20px;
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
 
   text-align: center;
 
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+  padding: 40px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px dashed rgba(255, 255, 255, 0.20);
+
+  border-radius: 20px;
+
+  backdrop-filter: blur(15px);
 }
 
-.empty-icon {
-  font-size: 45px;
 
-  margin-bottom: 10px;
+/* =========================================
+   EMPTY ICON
+========================================= */
+
+.empty-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  background: rgba(139, 92, 246, 0.18);
+
+  border: 1px solid rgba(167, 139, 250, 0.25);
+
+  border-radius: 50%;
+
+  color: #a78bfa;
+
+  font-size: 29px;
 }
 
 .empty-state h3 {
-  margin: 0 0 8px;
+  margin-bottom: 7px;
 
-  font-size: 21px;
+  color: white;
+
+  font-size: 18px;
 }
 
 .empty-state p {
-  margin: 0;
+  color: rgba(255, 255, 255, 0.50);
 
-  color: #6b7280;
+  font-size: 13px;
 }
 
-/* ================= RESPONSIVE ================= */
 
-@media (max-width: 900px) {
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .main-content {
+    width: 90%;
+  }
+
   .notes-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .welcome-section h1 {
+    font-size: 36px;
+  }
 }
 
-@media (max-width: 650px) {
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
 
   .navbar {
-    padding: 0 20px;
+    height: auto;
+
+    padding: 15px 5%;
+
+    gap: 15px;
   }
 
-  .nav-user span {
-    display: none;
+  .logo {
+    font-size: 21px;
+  }
+
+  .nav-user {
+    gap: 8px;
+  }
+
+  .nav-user > span {
+    font-size: 12px;
+
+    padding: 7px 10px;
+  }
+
+  .logout-btn {
+    padding: 8px 12px;
+
+    font-size: 12px;
   }
 
   .main-content {
     width: 92%;
-    padding-top: 30px;
+
+    padding-top: 35px;
   }
 
   .welcome-section {
     flex-direction: column;
+
     align-items: flex-start;
 
     gap: 25px;
+
+    padding-bottom: 35px;
   }
 
   .welcome-section h1 {
-    font-size: 27px;
+    font-size: 31px;
+  }
+
+  .welcome-content {
+    font-size: 14px;
   }
 
   .note-count {
     width: 100%;
-    height: 90px;
+
+    min-height: 90px;
+
+    flex-direction: row;
+
+    gap: 12px;
   }
 
-  .notes-grid {
-    grid-template-columns: 1fr;
+  .note-count span {
+    margin: 0;
+  }
+
+  .note-count strong {
+    font-size: 28px;
+  }
+
+  .note-count small {
+    margin: 0;
+  }
+
+  .add-note-card {
+    padding: 23px;
+
+    border-radius: 20px;
   }
 
   .notes-header {
     flex-direction: column;
-    align-items: flex-start;
 
-    gap: 15px;
+    align-items: stretch;
   }
 
   .search-box {
     width: 100%;
   }
 
-  .search-box input {
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 450px) {
+
+  .navbar {
+    flex-direction: column;
+
+    align-items: center;
+  }
+
+  .nav-user {
     width: 100%;
+
+    justify-content: center;
+  }
+
+  .welcome-section h1 {
+    font-size: 27px;
+  }
+
+  .welcome-content {
+    font-size: 13px;
   }
 
   .add-note-card {
-    padding: 20px;
+    padding: 18px;
+  }
+
+  .section-title h2 {
+    font-size: 17px;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .add-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .notes-header h2 {
+    font-size: 23px;
   }
 }
+```

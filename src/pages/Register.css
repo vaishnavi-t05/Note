@@ -1,58 +1,235 @@
+/* =========================
+   RESET
+========================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* =========================
+   REGISTER PAGE
+========================= */
+
 .register-container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f4f4f4;
+  padding: 20px;
+
+  background:
+    radial-gradient(circle at top left, #7c3aed 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #06b6d4 0%, transparent 35%),
+    linear-gradient(135deg, #111827, #1e1b4b);
+
+  font-family: Arial, Helvetica, sans-serif;
 }
 
+/* =========================
+   REGISTER BOX
+========================= */
+
 .register-box {
-  width: 400px;
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,.2);
+  width: 420px;
+  padding: 45px 40px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  border-radius: 24px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.35);
+
+  color: white;
 }
+
+/* =========================
+   TITLE
+========================= */
 
 .register-box h2 {
   text-align: center;
-  margin-bottom: 20px;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  margin-bottom: 10px;
+
+  letter-spacing: 0.5px;
 }
+
+/* Small text below title */
+
+.register-box h2::after {
+  content: "Create your account and start taking notes";
+
+  display: block;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  margin-top: 10px;
+}
+
+/* =========================
+   FORM
+========================= */
 
 .register-box form {
   display: flex;
   flex-direction: column;
+
+  margin-top: 30px;
 }
+
+/* =========================
+   INPUTS
+========================= */
 
 .register-box input {
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  width: 100%;
+
+  padding: 15px 17px;
+
+  margin-bottom: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: white;
+
+  font-size: 15px;
+
+  transition: all 0.3s ease;
 }
+
+/* Placeholder */
+
+.register-box input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Input focus */
+
+.register-box input:focus {
+  border-color: #a78bfa;
+
+  background: rgba(255, 255, 255, 0.16);
+
+  box-shadow:
+    0 0 0 3px rgba(167, 139, 250, 0.15);
+}
+
+/* =========================
+   REGISTER BUTTON
+========================= */
 
 .register-box button {
-  padding: 12px;
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 5px;
+
   border: none;
-  background: #007bff;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #06b6d4
+  );
+
   color: white;
+
   font-size: 16px;
-  border-radius: 5px;
+
+  font-weight: 600;
+
   cursor: pointer;
+
+  transition: all 0.3s ease;
 }
 
+/* Button hover */
+
 .register-box button:hover {
-  background: #0056b3;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(6, 182, 212, 0.3);
 }
+
+/* Button click */
+
+.register-box button:active {
+  transform: translateY(0);
+}
+
+/* =========================
+   BOTTOM TEXT
+========================= */
 
 .register-box p {
   text-align: center;
-  margin-top: 15px;
+
+  margin-top: 25px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 14px;
+}
+
+/* =========================
+   LINK
+========================= */
+
+.register-box p a {
+  color: #a78bfa;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  margin-left: 5px;
+
+  transition: 0.3s;
+}
+
+.register-box p a:hover {
+  color: #67e8f9;
+
+  text-decoration: underline;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 500px) {
+
+  .register-box {
+    width: 100%;
+    padding: 35px 25px;
+  }
+
+  .register-box h2 {
+    font-size: 28px;
+  }
+
 }
