@@ -1,10 +1,13 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Register.css";
+import { useToast } from "../ToastContext";
 
 function Register() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [user, setUser] = useState({
     username: "",
@@ -13,6 +16,9 @@ function Register() {
     confirmPassword: "",
   });
 
+  // =========================
+  // HANDLE INPUT CHANGE
+  // =========================
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -20,20 +26,43 @@ function Register() {
     });
   };
 
+  // =========================
+  // REGISTER
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { username, email, password, confirmPassword } = user;
+    const {
+      username,
+      email,
+      password,
+      confirmPassword,
+    } = user;
 
-    // Check empty fields
-    if (!username || !email || !password || !confirmPassword) {
-      alert("Please fill all fields");
+    // =========================
+    // EMPTY FIELD VALIDATION
+    // =========================
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
+      showToast(
+        "Please fill all fields",
+        "error"
+      );
       return;
     }
 
-    // Check passwords
+    // =========================
+    // PASSWORD VALIDATION
+    // =========================
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      showToast(
+        "Passwords do not match",
+        "error"
+      );
       return;
     }
 
@@ -47,29 +76,53 @@ function Register() {
         }
       );
 
-      console.log(response.data);
+      console.log(
+        "Registration response:",
+        response.data
+      );
 
-      alert("Registration Successful");
+      // =========================
+      // SUCCESS POPUP
+      // =========================
+      showToast(
+        "Registration successful!",
+        "success"
+      );
 
-      navigate("/login");
+      // Wait so user can see popup
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
 
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Registration error:",
+        error.response?.data || error
+      );
 
       if (error.response) {
-        alert(
-          error.response.data.message ||
-          "Registration failed"
+        const data = error.response.data;
+
+        showToast(
+          data.message ||
+            data.detail ||
+            "Registration failed",
+          "error"
         );
       } else {
-        alert("Cannot connect to backend");
+        showToast(
+          "Cannot connect to backend",
+          "error"
+        );
       }
     }
   };
 
   return (
     <div className="register-container">
+
       <div className="register-box">
+
         <h2>Create Account</h2>
 
         <form onSubmit={handleSubmit}>
@@ -114,12 +167,16 @@ function Register() {
 
         <p>
           Already have an account?{" "}
-          <Link to="/login">Login</Link>
+          <Link to="/login">
+            Login
+          </Link>
         </p>
 
       </div>
+
     </div>
   );
 }
 
 export default Register;
+

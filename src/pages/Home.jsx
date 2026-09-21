@@ -1,9 +1,14 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Home.css";
+import { useToast } from "../ToastContext";
 
 function Home() {
-  const username = localStorage.getItem("username") || "User";
+  const username =
+    localStorage.getItem("username") || "User";
+
+  const { showToast } = useToast();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -33,19 +38,27 @@ function Home() {
       );
 
       setNotes(response.data);
+
     } catch (error) {
       console.error(
         "Error fetching notes:",
         error.response?.data || error
       );
 
-      // Token expired or unauthorized
+      // Token expired
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("username");
 
-        window.location.replace("/login");
+        showToast(
+          "Session expired. Please login again.",
+          "error"
+        );
+
+        setTimeout(() => {
+          window.location.replace("/login");
+        }, 1000);
       }
     }
   };
@@ -71,7 +84,10 @@ function Home() {
     e.preventDefault();
 
     if (!title.trim() || !content.trim()) {
-      alert("Please enter title and content");
+      showToast(
+        "Please enter title and content",
+        "error"
+      );
       return;
     }
 
@@ -83,10 +99,12 @@ function Home() {
     }
 
     try {
+
       // =========================
       // UPDATE NOTE
       // =========================
       if (editId !== null) {
+
         await axios.put(
           `${import.meta.env.VITE_API_URL}/notes/update/${editId}/`,
           {
@@ -100,15 +118,20 @@ function Home() {
           }
         );
 
-        alert("Note updated successfully");
+        showToast(
+          "Note updated successfully!",
+          "success"
+        );
 
         setEditId(null);
+
       }
 
       // =========================
       // ADD NOTE
       // =========================
       else {
+
         await axios.post(
           `${import.meta.env.VITE_API_URL}/notes/`,
           {
@@ -122,7 +145,10 @@ function Home() {
           }
         );
 
-        alert("Note added successfully");
+        showToast(
+          "Note added successfully!",
+          "success"
+        );
       }
 
       // Clear inputs
@@ -131,26 +157,46 @@ function Home() {
 
       // Refresh notes
       fetchNotes();
+
     } catch (error) {
+
       console.error(
         "Error saving note:",
         error.response?.data || error
       );
 
+      // Unauthorized
       if (error.response?.status === 401) {
+
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("username");
 
-        window.location.replace("/login");
+        showToast(
+          "Session expired. Please login again.",
+          "error"
+        );
+
+        setTimeout(() => {
+          window.location.replace("/login");
+        }, 1000);
+
         return;
       }
 
       if (error.response) {
-        console.log(error.response.data);
-        alert("Failed to save note");
+
+        showToast(
+          "Failed to save note",
+          "error"
+        );
+
       } else {
-        alert("Cannot connect to backend");
+
+        showToast(
+          "Cannot connect to backend",
+          "error"
+        );
       }
     }
   };
@@ -159,6 +205,7 @@ function Home() {
   // EDIT NOTE
   // =========================
   const handleEdit = (note) => {
+
     setTitle(note.title);
     setContent(note.content);
     setEditId(note.id);
@@ -173,15 +220,22 @@ function Home() {
   // CANCEL EDIT
   // =========================
   const handleCancel = () => {
+
     setEditId(null);
     setTitle("");
     setContent("");
+
+    showToast(
+      "Edit cancelled",
+      "success"
+    );
   };
 
   // =========================
   // DELETE NOTE
   // =========================
   const handleDelete = async (id) => {
+
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this note?"
     );
@@ -198,6 +252,7 @@ function Home() {
     }
 
     try {
+
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/notes/delete/${id}/`,
         {
@@ -207,25 +262,43 @@ function Home() {
         }
       );
 
-      alert("Note deleted successfully");
+      showToast(
+        "Note deleted successfully!",
+        "success"
+      );
 
       fetchNotes();
+
     } catch (error) {
+
       console.error(
         "Error deleting note:",
         error.response?.data || error
       );
 
+      // Unauthorized
       if (error.response?.status === 401) {
+
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("username");
 
-        window.location.replace("/login");
+        showToast(
+          "Session expired. Please login again.",
+          "error"
+        );
+
+        setTimeout(() => {
+          window.location.replace("/login");
+        }, 1000);
+
         return;
       }
 
-      alert("Failed to delete note");
+      showToast(
+        "Failed to delete note",
+        "error"
+      );
     }
   };
 
@@ -233,22 +306,32 @@ function Home() {
   // LOGOUT
   // =========================
   const handleLogout = () => {
-    // Remove all authentication data
+
+    // Remove authentication data
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("username");
 
-    // Clear notes from state
+    // Clear notes
     setNotes([]);
 
-    // Go to login and reload the app
-    window.location.replace("/login");
+    // Show logout popup
+    showToast(
+      "Logged out successfully!",
+      "success"
+    );
+
+    // Go to login after popup
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 1000);
   };
 
   // =========================
   // SEARCH NOTES
   // =========================
   const filteredNotes = notes.filter((note) => {
+
     const noteTitle =
       note.title?.toLowerCase() || "";
 

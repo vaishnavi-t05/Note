@@ -1,0 +1,186 @@
+```css
+/* =========================================
+   TOAST CONTAINER
+========================================= */
+
+.toast {
+  position: fixed;
+
+  top: 25px;
+  right: 25px;
+
+  min-width: 320px;
+  max-width: 400px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 17px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.20);
+
+  border-radius: 16px;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  color: white;
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.35);
+
+  z-index: 9999;
+
+  animation: toastSlide 0.4s ease;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes toastSlide {
+
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.toast-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.toast-success {
+  border-left: 4px solid #06b6d4;
+}
+
+.toast-success .toast-icon {
+  background: linear-gradient(
+    135deg,
+    #06b6d4,
+    #8b5cf6
+  );
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.toast-error {
+  border-left: 4px solid #f87171;
+}
+
+.toast-error .toast-icon {
+  background: #ef4444;
+}
+
+
+/* =========================================
+   INFO
+========================================= */
+
+.toast-info {
+  border-left: 4px solid #a78bfa;
+}
+
+.toast-info .toast-icon {
+  background: #8b5cf6;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.toast-message {
+  flex: 1;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 14px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.toast-close {
+  width: 25px;
+  height: 25px;
+
+  border: none;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 21px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.toast-close:hover {
+  color: white;
+
+  transform: scale(1.1);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 500px) {
+
+  .toast {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+
+    min-width: auto;
+    width: auto;
+  }
+
+}
+```

@@ -1,10 +1,13 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
+import { useToast } from "../ToastContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -13,6 +16,9 @@ function Login() {
 
   const [loading, setLoading] = useState(false);
 
+  // =========================
+  // HANDLE INPUT CHANGE
+  // =========================
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,13 +26,20 @@ function Login() {
     });
   };
 
+  // =========================
+  // LOGIN
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { username, password } = formData;
 
+    // Empty field validation
     if (!username || !password) {
-      alert("Please enter username and password");
+      showToast(
+        "Please enter username and password",
+        "error"
+      );
       return;
     }
 
@@ -43,44 +56,78 @@ function Login() {
 
       console.log("Login response:", response.data);
 
-      // Check whether backend returned access token
+      // =========================
+      // CHECK ACCESS TOKEN
+      // =========================
       if (!response.data.access) {
-        alert("Login failed. Access token not received.");
+        showToast(
+          "Login failed. Access token not received.",
+          "error"
+        );
         return;
       }
 
-      // Save JWT token
-      localStorage.setItem("token", response.data.access);
+      // =========================
+      // SAVE ACCESS TOKEN
+      // =========================
+      localStorage.setItem(
+        "token",
+        response.data.access
+      );
 
-      // Save refresh token if backend sends it
+      // =========================
+      // SAVE REFRESH TOKEN
+      // =========================
       if (response.data.refresh) {
-        localStorage.setItem("refreshToken", response.data.refresh);
+        localStorage.setItem(
+          "refreshToken",
+          response.data.refresh
+        );
       }
 
-      // Save username
+      // =========================
+      // SAVE USERNAME
+      // =========================
       localStorage.setItem(
         "username",
         response.data.username || username
       );
 
-      alert("Login Successful");
+      // =========================
+      // SUCCESS POPUP
+      // =========================
+      showToast(
+        "Login successful!",
+        "success"
+      );
 
-      // Navigate to Home
-      navigate("/home", { replace: true });
+      // Wait so user can see popup
+      setTimeout(() => {
+        navigate("/home", {
+          replace: true,
+        });
+      }, 1200);
 
     } catch (error) {
-      console.error("Login error:", error.response?.data || error);
+      console.error(
+        "Login error:",
+        error.response?.data || error
+      );
 
       if (error.response) {
         const data = error.response.data;
 
-        alert(
+        showToast(
           data.detail ||
-          data.message ||
-          "Invalid username or password"
+            data.message ||
+            "Invalid username or password",
+          "error"
         );
       } else {
-        alert("Cannot connect to backend");
+        showToast(
+          "Cannot connect to backend",
+          "error"
+        );
       }
     } finally {
       setLoading(false);
@@ -89,7 +136,9 @@ function Login() {
 
   return (
     <div className="container">
+
       <div className="form-box">
+
         <h2>Login</h2>
 
         <form onSubmit={handleSubmit}>
@@ -112,20 +161,29 @@ function Login() {
             required
           />
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Logging in..."
+              : "Login"}
           </button>
 
         </form>
 
         <p>
           Don't have an account?{" "}
-          <Link to="/register">Register</Link>
+          <Link to="/register">
+            Register
+          </Link>
         </p>
 
       </div>
+
     </div>
   );
 }
 
 export default Login;
+
