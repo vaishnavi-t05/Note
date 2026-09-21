@@ -116,13 +116,27 @@ function Login() {
 
       if (error.response) {
         const data = error.response.data;
+        const status = error.response.status;
 
-        showToast(
-          data.detail ||
-            data.message ||
-            "Invalid username or password",
-          "error"
-        );
+        if (status === 401) {
+          showToast(
+            data.detail ||
+              "Invalid username or password",
+            "error"
+          );
+        } else if (status >= 500) {
+          showToast(
+            "Server error. Please try again later.",
+            "error"
+          );
+        } else {
+          showToast(
+            data.detail ||
+              data.message ||
+              "Login failed",
+            "error"
+          );
+        }
       } else {
         showToast(
           "Cannot connect to backend",

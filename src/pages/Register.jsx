@@ -102,13 +102,22 @@ function Register() {
 
       if (error.response) {
         const data = error.response.data;
+        const status = error.response.status;
 
-        showToast(
-          data.message ||
-            data.detail ||
-            "Registration failed",
-          "error"
-        );
+        if (status >= 500) {
+          showToast(
+            "Server error. Please try again later.",
+            "error"
+          );
+        } else {
+          showToast(
+            data.message ||
+              data.detail ||
+              JSON.stringify(data) ||
+              "Registration failed",
+            "error"
+          );
+        }
       } else {
         showToast(
           "Cannot connect to backend",
